@@ -8,7 +8,7 @@ context = {
   "first_name": "Денис",
   "last_name": "Самборский",
   "job": "Программист",
-  "town": "Красноярск",
+  "town": "Красноярск"
 }
 
 skills = [
@@ -52,22 +52,24 @@ def rand_abilities(dictionary, *abilities):
   for ability in abilities:
     dictionary[ability] = random.randint(8, 14)
 
-for i in range(10):
+for charsheet in range(10):
   runic_skills = []
-  context['first_name'] = fake.first_name()
-  context['last_name'] = fake.last_name()
-  context['town'] = fake.city()
-  context['job'] = fake.job()
+  context = {
+    "first_name": fake.first_name(),
+    "last_name": fake.last_name(),
+    "job": fake.job(),
+    "town": fake.city()
+  }
 
   rand_abilities(context, "strength", "agility", "endurance", "intelligence", "luck")
 
   npc_skills = random.sample(skills, 3)
 
-  for n in range(3):
-    word = []
-    for letter in npc_skills[n]:
-      word.append(runic_letters[letter])
-    runic_skills.append(''.join(word))
-    context['skill_{}'.format(n+1)] = runic_skills[n]
+  for skill_number, skill in enumerate(npc_skills):
+    skill_word = []
+    for letter in npc_skills[skill_number]:
+      skill_word.append(runic_letters[letter])
+    runic_skills.append(''.join(skill_word))
+    context['skill_{}'.format(skill_number+1)] = runic_skills[skill_number]
 
-  file_operations.render_template("charsheet.svg", "charsheet/charsheet-{}.svg".format(i), context)
+  file_operations.render_template("charsheet.svg", "charsheet/charsheet-{}.svg".format(charsheet), context)
